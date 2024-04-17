@@ -19,3 +19,11 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plug
 if [ $? -eq 0 ]; then
     echo "Docker installed successfully"
 fi
+
+sudo swapoff -a
+
+sudo containerd config default > /etc/containerd/config.toml
+
+sudo sed -i '/plugins\."io\.containerd\.grpc\.v1\.cri"\.containerd\.runtimes\.runc\.options/s/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+
+sudo systemctl restart containerd
